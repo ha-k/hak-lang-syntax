@@ -1,7 +1,7 @@
 # hak-lang-syntax
 Java package sources implementing the [hak.language.syntax](https://hassan-ait-kaci.net/hlt/doc/hlt/api/hlt/language/syntax/package-summary.html) API
 
-The architecture of this code is described and discussed of this article:
+The architecture of this code is described and discussed in this article:
 
 “An Abstract, Reusable, and Extensible Programming Language Design Architecture” in: Essays dedicated to Peter
 Buneman—In Search of Elegance in the Theory and Practice of Computation (Edinburgh, UK), Val Tannen, Limsoon
