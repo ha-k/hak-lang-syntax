@@ -1,0 +1,139 @@
+//   /* **************************************************************** */
+//   // Original XML representation and display:
+//   /* **************************************************************** */
+
+//   private String _xmlTag = null;
+
+//   public final String xmlTag ()
+//     {
+//       return _xmlTag;
+//     }
+
+//   /**
+//    * Returns an open tag to used for XML notation.
+//    */
+//   public final String openXmlTag ()
+//     {
+//       return "<"+_xmlTag+">";
+//     }
+
+//   /**
+//    * Returns a closing tag to used for XML notation.
+//    */
+//   public final String closeXmlTag ()
+//     {
+//       return "</"+_xmlTag+">";
+//     }
+
+//   /**
+//    * Prints the parse tree rooted in this node using an XML tag
+//    * notation on stdout.
+//    */
+//   public final void xmlify ()
+//     {
+//       System.out.println("<?xml version=\"1.0\"?>");
+//       System.out.println("<!-- ILOG RIF Serializer output of "+(new Date())+" -->");
+//       xmlify(0,System.out);
+//     }
+
+//   /**
+//    * Outputs the parse tree rooted in this node using XML serialization
+//    * on the specified output stream with the given initial margin.
+//    * NB: Use when parse tree is in <tt>GenericParser.XML_TREE</tt> mode.
+//    */
+//   public final void xmlify (int margin, PrintStream out)
+//     {
+//       if // this is an interior node
+// 	(!isLeafNode() && _children != null)
+//         {
+//           if // and this does not have an xml tag
+// 	    (_xmlTag == null)
+// 	    // process the children at same margin level and return
+//             {
+//               for (int i=0; i<_children.size(); i++)
+//                 getChild(i).xmlify(margin,out);
+//               return;
+//             }
+
+// 	  // otherwise, output the children offset at the next
+// 	  // margin level between a pair of margin-offset
+// 	  // matching open/close xml tags:
+
+//           for (int i=0; i<margin; i++) out.print(" ");
+//           out.println(openXmlTag());
+
+//           for (int i=0; i<_children.size(); i++)
+//             getChild(i).xmlify(margin+2,out);
+
+//           for (int i=0; i<margin; i++) out.print(" ");
+//           out.println(closeXmlTag());
+
+//           return;
+//         }
+
+//       // This is a leaf (token) node: serialize only if it carries a value.
+//       // In other words, erase literal tokens (i.e., keywords and punctuations).
+//       if (hasValue())
+//         {
+//           for (int i=0; i<margin; i++) out.print(" ");
+// 	  // Use the xml tag if specified, else use the token's symbol
+//           if (_xmlTag != null)
+//             out.println(openXmlTag()+stringValue()+closeXmlTag());
+//           else
+//             out.println("<"+_symbol.name()+">"+
+//                         stringValue()+
+//                         "</"+_symbol.name()+">");
+//         }
+//     }
+
+//   /**
+//    * This builds an xml tree for this node using the specified xml info
+//    * string as a guiding pattern according to which the xml code is to
+//    * be generated. It is used by <tt>GenericParser.popHandle()</tt> upon
+//    * reduction with a rule only when <tt>GenericParser.parseTreeType</tt>
+//    * is <tt>GenericParser.XML_TREE</tt>.
+//    */
+//   final void buildXmlTree (XmlInfo info, ParserStackElement[] handle)
+//     {
+//       if (info != null)
+// 	{
+// 	  String xmlTag = info.tag();
+// 	  int[] xmlPattern = info.pattern();
+
+// 	  if (xmlTag != null)
+// 	    {
+// 	      // set the xml tag if there's one:
+// 	      _xmlTag = xmlTag;
+
+// 	      if (xmlPattern != null)
+// 		// If there's a pattern, add the children nodes from handle
+// 		// according to positions in the pattern:
+// 		for (int i=0; i<xmlPattern.length; i++)
+// 		  addChild(handle[xmlPattern[i]-1].getNode());
+// 	      return;
+// 	    }
+// 	}
+
+//       // The following corresponds to the default behavior of Jacc for
+//       // generating an XML-serialized form for this node whenever it is
+//       // reduced with an unannotated rule (i.e., when xmlTag == null).
+//       // By default, all children are kept except empty nodes and
+//       // irrelevant punctuation (i.e., tokens bearing no value but
+//       // themselves).
+
+//       for (int i=0; i<handle.length; i++)
+//         {
+//           ParseNode kid = handle[i].getNode();
+          
+//           // eliminate empty nodes:
+//           if (kid.isEmptyNode())
+//             continue;
+
+//           // eliminate punctuation tokens:
+//           if (kid.isLeafNode() && !kid.hasValue())
+//             continue;
+          
+//           // otherwise keep the child...
+//           addChild(kid);
+//         }
+//     }

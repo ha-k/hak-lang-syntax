@@ -1,0 +1,11 @@
+# FILE. . . . . d:/hak/hlt/src/hlt/language/syntax/Jacc.Configuration
+# EDIT BY . . . Hassan Ait-Kaci
+# ON MACHINE. . Hp-Dv7
+# STARTED ON. . Fri Apr 13 20:03:54 2012
+
+# Last modified on Mon Mar 26 06:07:01 2018 by hak
+
+# This is where all system-dependent parameters are defined
+# and can be redefined. Edit this file, then do 'make syntax'
+# in the enclosing directory (~/hlt/src/hak/language).
+

@@ -1,0 +1,33 @@
+IMPORTANT NOTE:
+
+The class Grammar defined in Grammar.java uses a parser to parse XML
+annotations called XmlAnnotationParser. It is therefore impossible to
+regenerate all the class files from the java sources in one go because
+the parser for XML annotations needs to be first generated in order
+for Grammar.java to be compiled - which introduces a chicken-and-egg
+situation.  So we need a bootstrapping process in order to compile the
+whole hlt.language.syntax package, this is what must be done:
+
+(1) Configure only Grammar.java so as it will generate a parser that
+    does not enable parsing XML annotations - this is feasible because
+    the grammar for XML annotations is very simple and does not use
+    XML annotations itself (see files in subdir /xml).
+
+    To do so commment out all parts in Grammar.java bracketed between:
+    // BEGIN COMMENT OUT FOR NO XML ANNOTATION PARSER
+    ...
+    // END COMMENT OUT FOR NO XML ANNOTATION PARSER
+
+(2) Recompile Jacc by regenerating the hlt.language.syntax package
+    (i.e., do 'make syntax' in this directory's parent directory).
+
+(3) Using this simpler version of Jacc, generate an XmlAnnotationParser
+    (i.e., go to  this directory's xml/ subdirectory and do 'make').
+
+(4) Reconfigure Jacc (i.e., Grammar.java) so as it may generate a parser
+    that enables parsing XML annotations - i.e., uncomment the commented
+    parts above.
+
+For now, we simply indicate the parts in file Grammar.java that need to
+be commented out between comments as indicated above.  Ideally, the Make
+file should contain a 'make bootstrap' to automate these steps.
